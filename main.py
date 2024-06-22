@@ -95,7 +95,7 @@ def predict():
 
 # Función para ejecutar Flask en un hilo separado
 def run_flask():
-    app.run(port=5000, debug=True, use_reloader=False)
+    app.run(host='0.0.0.0', port=8080)
 
 
     # Iniciar Flask en un hilo
