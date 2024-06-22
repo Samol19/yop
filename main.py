@@ -11,6 +11,7 @@ import threading
 import torch
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
+import os
 
 
 import json
@@ -58,12 +59,6 @@ def preprocess_image(image_bytes):
     img_t = preprocess(img)
     img_np = np.array(img_t)  # Convertir a numpy array
     
-    # Visualizar la imagen normalizada
-    plt.figure(figsize=(6, 6))
-    plt.imshow(np.transpose(img_np, (1, 2, 0)))
-    plt.axis('off')
-    plt.title('Imagen Normalizada')
-    plt.show()
     
     return img_t.unsqueeze(0)  # Añadir dimensión de lote
 
@@ -83,7 +78,6 @@ def predict():
     file = request.files['file']
     img_bytes = file.read()
     predicted_class_idx = predict_image(img_bytes)
-    print(predicted_class_idx)
     # Devolver el nombre del medicamento según el índice predicho
     if predicted_class_idx < len(medicamentos):
         predicted_class_idx= medicamentos[predicted_class_idx]
@@ -98,6 +92,5 @@ def run_flask():
     app.run(host='0.0.0.0', port=8080)
 
 
-    # Iniciar Flask en un hilo
-flask_thread = threading.Thread(target=run_flask)
-flask_thread.start()
+if __name__ =='__main__':
+    app.run(debug=True,host="0.0.0.0",port=os.getenv("PORT",default=5000))
